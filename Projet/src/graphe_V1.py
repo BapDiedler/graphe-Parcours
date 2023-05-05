@@ -1,4 +1,4 @@
-# -------------GRAPHES ORIENTES----------------#
+# -------------GRAPHES ORIENTES---------------- #
 
 ID = 0  # id d'un sommet
 
@@ -26,7 +26,7 @@ class Graphe:
     def add_sommets(self, val):
         # Entrée : un entier, une valeur
         # Sortie : rien
-        # Créer un sommet avec cette valeur . L'id du sommet est donnée automatiquement
+        # Créer un sommet avec cette valeur. L'id du sommet est donnée automatiquement
         s = Sommet(val)
         self.sommets += [s]
 
@@ -67,12 +67,26 @@ def DFS(G, v):
     while len(p) > 0:
         v = p.pop()
         print(v)
+        n.append(v)
         for w in G.succ(v):
             if not (w in p) and not (w in n):
                 p.append(w)
-        n.append(v)
-    n
     return n
+
+
+def BFS(G, v):
+    p = [v]
+    n = []
+    while len(p) > 0:
+        v = p.pop(0)
+        print(v)
+        n.append(v)
+        for w in G.succ(v):
+            if not (w in p) and not (w in n):
+                p.append(w)
+    return n
+
+
 
 
 # création du graphe :
@@ -83,6 +97,7 @@ def DFS(G, v):
 #       5
 #     /  \
 #    2   6
+
 G = Graphe(5)
 G.add_sommets(8)
 G.add_sommets(5)
@@ -105,26 +120,40 @@ print("===DFS====")
 n = DFS(G, 0)
 print("liste postfixe inversée : ", n)
 
-
+ID=0
 
 # ajout des sommets
 G1 = Graphe(1)
 for i in range(2, 7):
     G1.add_sommets(i)
 
-# ajout des arêtes
-for i in range(2, 5):
-    G1.add_arete(1, i)
 
-G1.add_arete(4, 3)
-G1.add_arete(3, 6)
-G1.add_arete(3, 5)
-G1.add_arete(5, 3)
-G1.add_arete(6, 3)
-G1.add_arete(6, 5)
+
+# ajout des arêtes
+for i in range(1, 4):
+    G1.add_arete(0, i)
+
+G1.add_arete(3, 2)
+G1.add_arete(2, 5)
+G1.add_arete(2, 4)
+G1.add_arete(4, 2)
+G1.add_arete(5, 2)
+G1.add_arete(5, 4)
 
 # ajout des boucles
-for i in [1, 2, 4, 5, 6]:
+for i in [0, 1, 3, 4, 5]:
     G1.add_arete(i, i)
 
-print(G1.get_nb_arete())
+
+n = DFS(G1, 0)
+print("liste postfixe inversée : ", n)
+n = BFS(G1, 0)
+print("liste suffixe inversée : ", n)
+
+""" 
+l'algorithme BFS n'est pas optimal car toutes les arêtes sont parcourut une fois même si le sommets est déjà colorié. 
+De plus l'implémentation du graphe n'est optimal pour l'implémentation du BFS qui utilise le coloriage des sommets. Car dans 
+la recherche des successeurs d'un sommet, tous les sommets du graphe vont être parcourut. or la méthode succ qui permet
+d'obtenir les successeurs d'un sommet est appelée pour chaque sommet. On a donc un complexité qui est de O(N+P)
+avec P le nombre d'arêtes et N le nombre de sommets.
+"""

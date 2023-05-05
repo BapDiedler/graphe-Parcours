@@ -1,12 +1,3 @@
-# -------------GRAPHES ORIENTES----------------#
-# Avec matrices d'adjacences : la diagonale contient les valeurs des sommets
-
-def Matrice(n):
-    # Entrée : un entier
-    # Sortie : une matrice de taille nxn avec des 0 partout
-    return [[0] * n for i in range(0, n)]
-
-
 class Graphe:
     def __init__(self, val):
         # Entrée : un entier
@@ -73,47 +64,3 @@ def DFS(G, v):
         n.append(v)
     n
     return n
-
-
-# ici non plus rien ne doit changer par rapport à la v1
-# création du graphe :
-#       5
-#       |
-#       8
-#       |
-#       5
-#     /  \
-#    2   6
-G = Graphe(5)
-G.add_sommet(8)
-G.add_sommet(5)
-G.add_sommet(2)
-G.add_sommet(6)
-print("mat : ", G.matrice)
-# arête = id
-G.add_arete(0, 1)
-G.add_arete(1, 2)
-G.add_arete(2, 3)
-G.add_arete(2, 4)
-
-print("mat : ", G.matrice)
-print("Nb sommets : ", G.get_nb_sommets())
-print("Nb arêtes : ", G.get_nb_arete())
-print("Valeur sommet num 1 : ", G.get_sommet_num(1))
-
-print("succ de 2 : ")
-for w in G.succ(2):
-    print(w)
-
-print("===DFS====")
-n = DFS(G, 0)
-print("liste postfixe inversée : ", n)
-
-
-"""
-l'implémentation n'est pas optimale pour l'ajout de sommet. Car il va recréer une nouvelle matrice et parcourir l'ancien
-pour initialiser la nouvelle matrice.
-la recherche du nombre d'arêtes n'est pas optimal non plus optimal. Car il va parcourir toute la matrice.
-Pour l'algorithme DFS tous les sommets sont parcourus  ainsi que toute les arêtes. De plus pour la recherche de successeurs 
-cela se fait en 0(N) avec N le nombre de sommets
-"""
