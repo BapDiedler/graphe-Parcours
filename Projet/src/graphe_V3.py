@@ -63,7 +63,7 @@ class Graphe:
 
 
 def DFS(G, v):
-    visite = {v: "gris"}
+    visite = {}
     p = [v]
     n = []
     while len(p) > 0:
