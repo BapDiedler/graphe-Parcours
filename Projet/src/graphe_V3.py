@@ -63,19 +63,18 @@ class Graphe:
 
 
 def DFS(G, v):
-    # rien ne doit changer par rapport à la v1
-    visite = set()
+    visite = {v: "gris"}
     p = [v]
     n = []
     while len(p) > 0:
         v = p.pop()
-        if v not in visite:
-            visite.add(v)
-            n.append(v)
-            print(v)
-            for w in G.succ(v):
-                if w is not visite:
-                    p.append(w)
+        visite[v] = "noir"
+        n.append(v)
+        print(v)
+        for w in G.succ(v):
+            if visite.get(w) not in ["noir", "gris"]:
+                p.append(w)
+                visite[w] = "gris"
     return n
 
 # ici non plus rien ne doit changer par rapport à la v1
@@ -110,6 +109,43 @@ n = DFS(G, 0)
 
 print(n)
 
+
+ID=0
+
+# ajout des sommets
+G1 = Graphe(1)
+for i in range(2, 7):
+    G1.add_sommet(i)
+
+
+
+# ajout des arêtes
+for i in range(1, 4):
+    G1.add_arete(0, i)
+
+G1.add_arete(3, 2)
+G1.add_arete(2, 5)
+G1.add_arete(2, 4)
+G1.add_arete(4, 2)
+G1.add_arete(5, 2)
+G1.add_arete(5, 4)
+
+# ajout des boucles
+for i in [0, 1, 3, 4, 5]:
+    G1.add_arete(i, i)
+
+
+print("Nb sommets : ", G1.get_nb_sommets())
+print("Nb arêtes : ", G1.get_nb_arete())
+print("Valeur sommet num 1 : ", G1.get_sommet_num(1))
+
+print("succ de 2 : ")
+for w in G1.succ(2):
+    print(w)
+
+n = DFS(G1, 0)
+
+print(n)
 
 """
 l'algorithme DFS est plus optimal car il va utiliser une liste d'adjacence se qui est le plus optimal pour cette algorithme.
