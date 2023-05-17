@@ -115,5 +115,5 @@ l'implémentation n'est pas optimale pour l'ajout de sommet. Car il va recréer 
 pour initialiser la nouvelle matrice.
 la recherche du nombre d'arêtes n'est pas optimal non plus optimal. Car il va parcourir toute la matrice.
 Pour l'algorithme DFS tous les sommets sont parcourus  ainsi que toute les arêtes. De plus pour la recherche de successeurs 
-cela se fait en 0(N) avec N le nombre de sommets
+cela se fait en 0(N) avec N le nombre de sommets car on utilise une liste pour faire cela.
 """

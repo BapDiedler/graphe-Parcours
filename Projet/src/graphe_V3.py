@@ -1,16 +1,20 @@
 ID = 0  # identifiant utilisé pour avoir l'unicité des sommets du graphe
 
 
-class Successeur:
-    def __init__(self):
+class Sommet:
+    def __init__(self, val):
         # Entrée : un entier
         # Sortie : rien
         # Crée une liste de successeurs
+        self.val = val
         self.succ = []
 
     def get_succ(self):
         # Sortie : sommet qui pointe vers les successeurs
         return self.succ
+
+    def get_valeur_sommet(self):
+        return self.val
 
     def add_succ(self, val):
         # Entrée : un entier qui représente l'identifiant du sommet ajouté
@@ -24,46 +28,41 @@ class Graphe:
         # Sortie : rien
         # Crée un graphe avec un sommet de valeur val définit par une matrice 1x1
         self.sommets = []
-        self.sommets.append(val)
-        self.successeurs = []
-        self.successeurs.append(Successeur())
-        self.nb_sommets = 1
+        self.sommets.append(Sommet(val))
 
     def get_nb_sommets(self):
-        return self.nb_sommets
+        return len(self.sommets)
 
     def get_nb_arete(self):
         nb_aretes = 0
-        for i in range(self.nb_sommets):
-            nb_aretes += len(self.successeurs[i].get_succ())
+        for i in range(self.get_nb_sommets()):
+            nb_aretes += len(self.sommets[i].get_succ())
         return nb_aretes
 
     def get_sommet_num(self, i):
         # Entrée : l'id d'un sommet
         # Sortie : la valeur de ce sommet, un entier
-        return self.sommets[i]
+        return self.sommets[i].get_valeur_sommet()
 
     def add_sommet(self, val):
         # Entrée : un entier, une valeur
         # Sortie : rien
-        self.nb_sommets += 1
-        self.sommets.append(val)
-        self.successeurs.append(Successeur())
+        self.sommets.append(Sommet(val))
 
     def add_arete(self, v, w):
         # Entrées : deux entiers, les Id des sommets
         # Sortie : rien
         # Ajoute l'arête orienté. Les poids sur les arêtes ne sont pas gérés.
-        self.successeurs[v].add_succ(w)
+        self.sommets[v].add_succ(w)
 
     def succ(self, i):
         # Entrée : l'id d'un sommet, un entier
         # Sortie : la liste des numéros des sommets, un tableau d'entiers
-        return self.successeurs[i].get_succ()
+        return self.sommets[i].get_succ()
 
 
 def DFS(G, v):
-    visite = {}
+    visite = {v: "gris"}
     p = [v]
     n = []
     while len(p) > 0:
@@ -149,7 +148,8 @@ print(n)
 
 """
 l'algorithme DFS est plus optimal car il va utiliser une liste d'adjacence se qui est le plus optimal pour cette algorithme.
-(voir cours) et de plus au lieu d'utiliser un coloriage des sommets, j'utilise un set (ensemble) pour regarder 
-si le sommet à déjà été passé ou non. Car il est plus optimal dans la recherche d'éléments O(1)/constant car il utilise 
-une table de hachage. de plus il est bien en espace car il ne compte pas les doublons.
+(voir cours) et de plus, pour le coloriage des sommets, on peut utiliser un dictionnaire avec les sommets comme clefs et 
+la couleur comme valeur. Se qui réduit drastiquement le temps de recherche pour la condition de la ligne 
+"if visite.get(w) not in ["noir", "gris"]:" car le temps de recherche dans un dictionnaire se fait en O(1) car présence d'une clef.
+Contrairement au temps de recherche dans une liste qui se fait en O(n) avec n la taille de la liste.
 """
