@@ -151,6 +151,8 @@ print("liste postfixe inversée : ", n)
 n = BFS(G1, 0)
 print("liste suffixe inversée : ", n)
 
+
+"""
 ID=0
 
 # Création du graphe avec 1000 sommets
@@ -170,6 +172,8 @@ end_time = time.time()
 # Affichage du temps d'exécution
 execution_time = (end_time - start_time)/10000
 print("Temps d'exécution : %.10f secondes" % execution_time)
+Temps d'exécution : 0.0003893661 secondes
+"""
 
 """ 
 l'algorithme BFS n'est pas optimal car toutes les arêtes sont parcourut une fois même si le sommets est déjà colorié. 
@@ -177,7 +181,4 @@ De plus l'implémentation du graphe n'est optimal pour l'implémentation du BFS 
 la recherche des successeurs d'un sommet, tous les sommets du graphe vont être parcourut. or la méthode succ qui permet
 d'obtenir les successeurs d'un sommet est appelée pour chaque sommet. On a donc un complexité qui est de O(N+P)
 avec P le nombre d'arêtes et N le nombre de sommets.
-
-
-Temps d'exécution : 0.0003893661 secondes
 """

@@ -3,114 +3,73 @@ import time
 ID = 0  # identifiant utilisé pour avoir l'unicité des sommets du graphe
 
 
-class Node:  # la classe permet de représenter un node de la liste chaînée
-    def __init__(self, data):
-        # Entrée : un entier avec la valeur du node
-        # Sortie : rien
-        self.data = data
-        self.next = None
-
-
-class LinkedList:  # la classe représente une liste chaînée et permet de représenter
-                   # les liens de filiations entre les sommets du graphe
-
-    def __init__(self, data):
-        # Entrée : un entier avec la valeur du node
-        self.tete = Node(data)
-        self.nb_successeurs = 0  # nombre de successeurs
-
-    def add_node(self, val):
-        # Entrée : nouveau node ajouté à la liste
-        # Sortie : rien
-        new_node = Node(val)
-        if self.tete is None:
-            self.tete = new_node
-        else:
-            current = self.tete
-            while current.next:
-                current = current.next
-            current.next = new_node
-
-    def add_succ(self, val):
-        # Entrée : un entier représentant le nouveau successeur
-        if self.tete is not None:
-            current = self.tete
-            while current.next:
-                current = current.next
-            current.next = Node(val)
-            self.nb_successeurs += 1
-
-    def get_nb_succ(self):
-        return self.nb_successeurs
-
-    def get_valeur_sommet(self):
-        if self.tete is not None:
-            return self.tete.data
-        return None
+class Sommet:
+    def __init__(self, val):
+        self.val = val
+        self.succ = []  # Liste des successeurs du sommet
+        self.couleur = "blanc"  # Couleur initiale du sommet (blanc)
 
     def get_succ(self):
-        successors = []
-        current = self.tete.next
-        while current:
-            successors.append(current.data)
-            current = current.next
-        return successors
+        return self.succ
+
+    def get_couleur(self):
+        return self.couleur
+
+    def get_valeur_sommet(self):
+        return self.val
+
+    def add_succ(self, val):
+        self.succ.append(val)
+
+    def set_couleur(self, new_couleur):
+        self.couleur = new_couleur
 
 
 class Graphe:
     def __init__(self, val):
         # Entrée : un entier
-        # Sortie : rien
-        # Crée un graphe avec un sommet de valeur val définit par une matrice 1x1
-        self.sommets = []
-        self.sommets.append(LinkedList(val))
+        self.sommets = [Sommet(val)]  # Liste des sommets du graphe
 
     def get_nb_sommets(self):
         # Sortie : le nombre de sommets dans le graphe
         return len(self.sommets)
 
     def get_nb_arete(self):
-        nb_aretes = 0
-        for sommet in self.sommets:  # parcours de tous les sommets
-            nb_aretes += sommet.get_nb_succ()
-        return nb_aretes
+        # Sortie : le nombre d'arêtes (arcs, car orientés, mais ce sont les méthodes utilisées depuis le début)
+        return sum(len(s.get_succ()) for s in self.sommets)  # Calcul du nombre d'arêtes de manière efficace
 
     def get_sommet_num(self, index):
-        # Entrée : l'id d'un sommet
-        # Sortie : la valeur de ce sommet, un entier
+        # Entrée : un entier l'index ième sommet
+        # Sortie : le numéro correspondant à l'index ième sommet
         return self.sommets[index].get_valeur_sommet()
 
     def add_sommet(self, val):
-        # Entrée : un entier, une valeur
-        # Sortie : rien
-        self.sommets.append(LinkedList(val))
+        # Entrée : un entier état la valeur du nouveau sommet
+        self.sommets.append(Sommet(val))
 
     def add_arete(self, v, w):
-        # Entrées : deux entiers, les Id des sommets
-        # Sortie : rien
-        # Ajoute l'arête orienté. Les poids sur les arêtes ne sont pas gérés.
+        # Entrée : deux entiers. Le premier étant le sommet de départ et le deuxième le sommet d'arrivé
         self.sommets[v].add_succ(w)
 
     def succ(self, index):
-        # Entrée : l'id d'un sommet, un entier
-        # Sortie : la liste chaînée des numéros des sommets, un tableau d'entiers
+        # Entrée : un entier. L'index ième sommet
+        # Sortie : les successeurs du sommet
         return self.sommets[index].get_succ()
 
 
 def DFS(G, v):
-    visite = {v: "gris"}  # utilisation d'un dictionnaire pour le coloriage des sommets
-    p = [v]
-    n = []
+    # Entrée : le graphe parcourut, avec le sommet de départ
+    G.sommets[v].set_couleur("gris")  # Coloriage du sommet initial en gris
+    p = [v]  # Pile pour le parcours en profondeur
+    n = []  # Liste des sommets visités dans l'ordre
     while len(p) > 0:
         v = p.pop()
-        visite[v] = "noir"
         n.append(v)
-        # print(v)
+        G.sommets[v].set_couleur("noir")  # Coloriage du sommet en noir après son exploration
         for w in G.succ(v):
-            if visite.get(w) not in ["noir", "gris"]:
+            if G.sommets[w].get_couleur() == "blanc":
                 p.append(w)
-                visite[w] = "gris"
-            w = G.succ(w)
+                G.sommets[w].set_couleur("gris")  # Coloriage du sommet successeur en gris pour exploration ultérieure
     return n
 
 
@@ -180,6 +139,8 @@ n = DFS(G1, 0)
 
 print(n)
 
+
+"""
 # Création du graphe avec 1000 sommets
 graphe = Graphe(0)
 for i in range(1, 1000):
@@ -190,13 +151,14 @@ graphe.add_arete(1, 2)
 
 # Exécution de l'algorithme DFS avec chronomètre
 start_time = time.time()
-for i in range(10000):
+for i in range(1000000):
     DFS(graphe, 0)
 end_time = time.time()
 
 # Affichage du temps d'exécution
-execution_time = (end_time - start_time) / 10000
+execution_time = (end_time - start_time) / 1000000
 print("Temps d'exécution : %.10f secondes" % execution_time)
+"""
 
 """
 l'algorithme DFS est plus optimal car il va utiliser une liste d'adjacence se qui est le plus optimal pour cette algorithme.
@@ -204,7 +166,4 @@ l'algorithme DFS est plus optimal car il va utiliser une liste d'adjacence se qu
 la couleur comme valeur. Se qui réduit drastiquement le temps de recherche pour la condition de la ligne 
 "if visite.get(w) not in ["noir", "gris"]:" car le temps de recherche dans un dictionnaire se fait en O(1) car présence d'une clef.
 Contrairement au temps de recherche dans une liste qui se fait en O(n) avec n la taille de la liste.
-
-
-Temps d'exécution : 0.0000019952 secondes
 """

@@ -111,6 +111,7 @@ print("===DFS====")
 n = DFS(G, 0)
 print("liste postfixe inversée : ", n)
 
+"""
 # Création du graphe avec 1000 sommets
 graphe = Graphe(0)
 for i in range(1, 1000):
@@ -128,6 +129,8 @@ end_time = time.time()
 # Affichage du temps d'exécution
 execution_time = (end_time - start_time) / 10000
 print("Temps d'exécution : %.10f secondes" % execution_time)
+Temps d'exécution : 0.0001504596 secondes
+"""
 
 """
 l'implémentation n'est pas optimale pour l'ajout de sommet. Car il va recréer une nouvelle matrice et parcourir l'ancien
@@ -135,8 +138,4 @@ pour initialiser la nouvelle matrice.
 la recherche du nombre d'arêtes n'est pas optimal non plus optimal. Car il va parcourir toute la matrice.
 Pour l'algorithme DFS tous les sommets sont parcourus  ainsi que toute les arêtes. De plus pour la recherche de successeurs 
 cela se fait en 0(N) avec N le nombre de sommets car on utilise une liste pour faire cela.
-
-
-
-Temps d'exécution : 0.0001504596 secondes
 """
