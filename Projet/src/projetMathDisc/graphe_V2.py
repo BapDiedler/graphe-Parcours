@@ -1,5 +1,7 @@
 # -------------GRAPHES ORIENTES----------------#
 # Avec matrices d'adjacences : la diagonale contient les valeurs des sommets
+import time
+
 
 def Matrice(n):
     # Entrée : un entier
@@ -37,10 +39,10 @@ class Graphe:
         # Sortie : rien
         self.nb_sommets += 1
         new_matrice = Matrice(self.nb_sommets)
-        for i in range(self.nb_sommets-1):
-            for j in range(self.nb_sommets-1):
+        for i in range(self.nb_sommets - 1):
+            for j in range(self.nb_sommets - 1):
                 new_matrice[i][j] = self.matrice[i][j]
-        new_matrice[self.nb_sommets-1][self.nb_sommets-1] = val
+        new_matrice[self.nb_sommets - 1][self.nb_sommets - 1] = val
         self.matrice = new_matrice
         # Incide : créer une matrice de taille n+1xn+1, tout recopier puis ajouter le sommet.
 
@@ -66,7 +68,7 @@ def DFS(G, v):
     n = []
     while len(p) > 0:
         v = p.pop()
-        print(v)
+        # print(v)
         for w in G.succ(v):
             if not (w in p) and not (w in n):
                 p.append(w)
@@ -109,6 +111,23 @@ print("===DFS====")
 n = DFS(G, 0)
 print("liste postfixe inversée : ", n)
 
+# Création du graphe avec 1000 sommets
+graphe = Graphe(0)
+for i in range(1, 1000):
+    graphe.add_sommet(i)
+graphe.add_arete(0, 1)
+graphe.add_arete(0, 2)
+graphe.add_arete(1, 2)
+
+# Exécution de l'algorithme DFS avec chronomètre
+start_time = time.time()
+for i in range(10000):
+    DFS(graphe, 0)
+end_time = time.time()
+
+# Affichage du temps d'exécution
+execution_time = (end_time - start_time) / 10000
+print("Temps d'exécution : %.10f secondes" % execution_time)
 
 """
 l'implémentation n'est pas optimale pour l'ajout de sommet. Car il va recréer une nouvelle matrice et parcourir l'ancien
@@ -116,4 +135,8 @@ pour initialiser la nouvelle matrice.
 la recherche du nombre d'arêtes n'est pas optimal non plus optimal. Car il va parcourir toute la matrice.
 Pour l'algorithme DFS tous les sommets sont parcourus  ainsi que toute les arêtes. De plus pour la recherche de successeurs 
 cela se fait en 0(N) avec N le nombre de sommets car on utilise une liste pour faire cela.
+
+
+
+Temps d'exécution : 0.0001504596 secondes
 """

@@ -1,4 +1,5 @@
 # -------------GRAPHES ORIENTES---------------- #
+import time
 
 ID = 0  # id d'un sommet
 
@@ -66,7 +67,7 @@ def DFS(G, v):
     n = []
     while len(p) > 0:
         v = p.pop()
-        print(v)
+        # print(v)
         n.append(v)
         for w in G.succ(v):
             if not (w in p) and not (w in n):
@@ -79,7 +80,7 @@ def BFS(G, v):
     n = []
     while len(p) > 0:
         v = p.pop(0)
-        print(v)
+        # print(v)
         n.append(v)
         for w in G.succ(v):
             if not (w in p) and not (w in n):
@@ -150,10 +151,33 @@ print("liste postfixe inversée : ", n)
 n = BFS(G1, 0)
 print("liste suffixe inversée : ", n)
 
+ID=0
+
+# Création du graphe avec 1000 sommets
+graphe = Graphe(0)
+for i in range(1, 1000):
+    graphe.add_sommets(i)
+graphe.add_arete(0, 1)
+graphe.add_arete(0, 2)
+graphe.add_arete(1, 2)
+
+# Exécution de l'algorithme DFS avec chronomètre
+start_time = time.time()
+for i in range(10000):
+    DFS(graphe, 0)
+end_time = time.time()
+
+# Affichage du temps d'exécution
+execution_time = (end_time - start_time)/10000
+print("Temps d'exécution : %.10f secondes" % execution_time)
+
 """ 
 l'algorithme BFS n'est pas optimal car toutes les arêtes sont parcourut une fois même si le sommets est déjà colorié. 
 De plus l'implémentation du graphe n'est optimal pour l'implémentation du BFS qui utilise le coloriage des sommets. Car dans 
 la recherche des successeurs d'un sommet, tous les sommets du graphe vont être parcourut. or la méthode succ qui permet
 d'obtenir les successeurs d'un sommet est appelée pour chaque sommet. On a donc un complexité qui est de O(N+P)
 avec P le nombre d'arêtes et N le nombre de sommets.
+
+
+Temps d'exécution : 0.0003893661 secondes
 """
