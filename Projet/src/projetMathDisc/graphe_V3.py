@@ -10,18 +10,25 @@ class Sommet:
         self.couleur = "blanc"  # Couleur initiale du sommet (blanc)
 
     def get_succ(self):
+        # Sortie : le nombre de successeurs du sommet
         return self.succ
 
     def get_couleur(self):
+        # Sortie : la couleur du sommet. Blanc pas visité. Gris en cours de visite. Noir déjà visité
         return self.couleur
 
     def get_valeur_sommet(self):
+        # Sortie : la valeur du sommet
         return self.val
 
     def add_succ(self, val):
+        # Entrée : un entier étant le nouveau successeur
+        # Sortie : rien
         self.succ.append(val)
 
     def set_couleur(self, new_couleur):
+        # Entrée : une chaîne de caractères étant la nouvelle couleur
+        # Sortie : rien
         self.couleur = new_couleur
 
 
